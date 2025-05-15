@@ -71,30 +71,102 @@ public class Level
         };
     }
 
+    public static Level FromString(params string[] map)
+    {
+        int width = map[0].Length;
+        List<TileType> tileTypes = [];
+
+        foreach (var line in map)
+        {
+            foreach (var tile in line)
+            {
+                tileTypes.Add(tile switch
+                {
+                    'P' => TileType.Player,
+                    'W' => TileType.Wall,
+                    'G' => TileType.Goal,
+                    '1' => TileType.NormalPortal,
+                    '2' => TileType.GravityPortal,
+                    '3' => TileType.EvenPortal,
+                    '4' => TileType.SpacePortal,
+                    _ => TileType.Path,
+                });
+            }
+        }
+
+
+        return FromTiles(width, [ ..tileTypes]);
+    }
+
     public static Level Get(int level) => level switch
     {
-        1 => FromTiles(4, 
-            TileType.Player, TileType.Path, TileType.Path, TileType.Goal
+        1 => FromString(
+            "P  G"
         ),
 
-        2 => FromTiles(4,
-            TileType.Player, TileType.Path, TileType.Wall, TileType.Wall,
-            TileType.Wall, TileType.Path, TileType.Wall, TileType.Wall,
-            TileType.Wall, TileType.Path, TileType.Path, TileType.Goal
+        2 => FromString(
+            "P WW",
+            "W WW",
+            "W  G"
         ),
 
-        3 => FromTiles(4,
-            TileType.Wall, TileType.Path, TileType.Path, TileType.Goal,
-            TileType.Wall, TileType.Path, TileType.Wall, TileType.Wall,
-            TileType.GravityPortal, TileType.Player, TileType.Wall, TileType.Wall,
-            TileType.Wall, TileType.Wall, TileType.Wall, TileType.Wall
+        3 => FromString(
+            "W  G",
+            "W WW",
+            "2PWW"
         ),
 
-        4 => FromTiles(3,
-            TileType.Goal, TileType.Wall, TileType.Wall,
-            TileType.Path, TileType.Player, TileType.Path,
-            TileType.Wall, TileType.Wall, TileType.Path,
-            TileType.Wall, TileType.GravityPortal, TileType.Path
+        4 => FromString(
+            "GWW",
+            " P ",
+            "WW ",
+            "W2 "
+        ),
+
+        5 => FromString(
+            "3P WG"
+        ),
+
+        6 => FromString(
+            "3P  WG"
+        ),
+
+        7 => FromString(
+            "WWW W",
+            "3P 2G"
+        ),
+
+        8 => FromString(
+            "2P 1WW",
+            "WW  WW",
+            "WW  WW",
+            "WW33 G"
+        ),
+
+        9 => FromString(
+            "WWW    ",
+            "4 P   G",
+            "WWW    "
+        ),
+
+        10 => FromString(
+            "WWWW    1",
+            "124P   3G",
+            "WWWW   WW"
+        ),
+
+        11 => FromString(
+            "WWWW4WW  ",
+            "2W  P   G",
+            "WWWWWWW 3"
+        ),
+
+        12 => FromString(
+            "WW1W  3",
+            "G  P   ",
+            "WW2W   ",
+            "WWWW   ",
+            "4W W   "
         ),
 
         _ => throw new Exception($"Unknown level {level}.")

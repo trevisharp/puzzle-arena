@@ -6,6 +6,9 @@ public class GravityUniverse : Universe
 
     public override (int nextX, int nextY) GetPlayerTarget(int currX, int currY, MoveType move, Level level)
     {
+        if (move == MoveType.Return)
+            return (level.StartX, level.StartY);
+        
         var above = level[currX, currY - 1];
         bool hasGround = above is null || above.IsWall;
 

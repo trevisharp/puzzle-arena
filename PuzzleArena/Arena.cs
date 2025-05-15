@@ -69,10 +69,6 @@ public class Arena(Level level, Controller controller)
 
         Window.OnFrame += () =>
         {
-            var currentTile = level[playerXPos, playerYPos];
-            if (currentTile is not null && currentTile.IsPortal)
-                currentUniverse = currentTile.PortalUniverse;
-
             animationTime += 5 * Window.DeltaTime;
             if (animationTime < 1f)
                 return;
@@ -80,6 +76,10 @@ public class Arena(Level level, Controller controller)
             playerXPos = nextPlayerXPos;
             playerYPos = nextPlayerYPos;
             animationTime = 0;
+            
+            var currentTile = level[playerXPos, playerYPos];
+            if (currentTile is not null && currentTile.IsPortal)
+                currentUniverse = currentTile.PortalUniverse;
 
             var move = controller.Move();
             var universe = universes[currentUniverse];
@@ -96,9 +96,14 @@ public class Arena(Level level, Controller controller)
                 {
                     (true, _, _, _) => green,
                     (_, true, _, _) => vec(0.4f, 0.2f, 0, 1),
-                    (_, _, true, 2) => black,
+                    (_, _, true, 1) => blue,
+                    (_, _, true, 2) => vec(0f, 0f, 0.3f, 1f),
+                    (_, _, true, 3) => vec(1f, 1f, 0.4f, 1f),
+                    (_, _, true, 4) => vec(0.1f, 0.1f, 0.1f, 1f),
                     _ when currentUniverse == 1 => blue,
-                    _ when currentUniverse == 2 => black,
+                    _ when currentUniverse == 2 => vec(0f, 0f, 0.3f, 1f),
+                    _ when currentUniverse == 3 => vec(1f, 1f, 0.4f, 1f),
+                    _ when currentUniverse == 4 => vec(0.1f, 0.1f, 0.1f, 1f),
                     _ => white
                 };
 

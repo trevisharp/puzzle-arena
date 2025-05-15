@@ -2,7 +2,7 @@
 using PuzzleArena.Controllers;
 
 var arena = new Arena(
-    Level.Get(3), 
+    Level.Get(12), 
     new HumanController()
 );
 arena.Start();

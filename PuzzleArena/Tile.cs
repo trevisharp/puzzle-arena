@@ -53,6 +53,15 @@ public class Tile
                 PortalUniverse = -1,
                 IsGoal = true
             },
+            TileType.NormalPortal => new Tile
+            {
+                X = x,
+                Y = y,
+                IsWall = false,
+                IsPortal = true,
+                PortalUniverse = 1,
+                IsGoal = false
+            },
             TileType.GravityPortal => new Tile
             {
                 X = x,
@@ -60,6 +69,24 @@ public class Tile
                 IsWall = false,
                 IsPortal = true,
                 PortalUniverse = 2,
+                IsGoal = false
+            },
+            TileType.EvenPortal => new Tile
+            {
+                X = x,
+                Y = y,
+                IsWall = false,
+                IsPortal = true,
+                PortalUniverse = 3,
+                IsGoal = false
+            },
+            TileType.SpacePortal => new Tile
+            {
+                X = x,
+                Y = y,
+                IsWall = false,
+                IsPortal = true,
+                PortalUniverse = 4,
                 IsGoal = false
             },
             _ => throw new Exception($"Unknow tile type {type}.")

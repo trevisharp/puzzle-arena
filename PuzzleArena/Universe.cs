@@ -14,6 +14,8 @@ public abstract class Universe
 
     public static Dictionary<int, Universe> All => new() {
         [1] = new NormalUniverse(),
-        [2] = new GravityUniverse()
+        [2] = new GravityUniverse(),
+        [3] = new EvenUniverse(),
+        [4] = new SpaceUniverse()
     };
 }
