@@ -53,6 +53,15 @@ public class Tile
                 PortalUniverse = -1,
                 IsGoal = true
             },
+            TileType.GravityPortal => new Tile
+            {
+                X = x,
+                Y = y,
+                IsWall = false,
+                IsPortal = true,
+                PortalUniverse = 2,
+                IsGoal = false
+            },
             _ => throw new Exception($"Unknow tile type {type}.")
         };
     }

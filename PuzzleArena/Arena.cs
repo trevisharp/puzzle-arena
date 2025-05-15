@@ -69,6 +69,10 @@ public class Arena(Level level, Controller controller)
 
         Window.OnFrame += () =>
         {
+            var currentTile = level[playerXPos, playerYPos];
+            if (currentTile is not null && currentTile.IsPortal)
+                currentUniverse = currentTile.PortalUniverse;
+
             animationTime += 5 * Window.DeltaTime;
             if (animationTime < 1f)
                 return;
@@ -80,7 +84,8 @@ public class Arena(Level level, Controller controller)
             var move = controller.Move();
             var universe = universes[currentUniverse];
             (nextPlayerXPos, nextPlayerYPos) = universe
-                .GetPlayerTarget(playerXPos, playerYPos, move, level.Tiles);
+                .GetPlayerTarget(playerXPos, playerYPos, move, level
+            );
         };
 
         Window.OnRender += () =>
@@ -91,7 +96,9 @@ public class Arena(Level level, Controller controller)
                 {
                     (true, _, _, _) => green,
                     (_, true, _, _) => vec(0.4f, 0.2f, 0, 1),
+                    (_, _, true, 2) => black,
                     _ when currentUniverse == 1 => blue,
+                    _ when currentUniverse == 2 => black,
                     _ => white
                 };
 
@@ -101,14 +108,14 @@ public class Arena(Level level, Controller controller)
                     var y = playerYPos * (1f - animationTime) + nextPlayerYPos * animationTime;
                     playerRender(
                         offsetX + x * sizeFactor + sizeFactor / 2,
-                        offsetY + y * sizeFactor + sizeFactor / 2,
+                        Window.Height - (offsetY + y * sizeFactor + sizeFactor / 2),
                         sizeFactor
                     );
                 }
 
                 tileRender(
                     offsetX + tile.X * sizeFactor + sizeFactor / 2,
-                    offsetY + tile.Y * sizeFactor + sizeFactor / 2,
+                    Window.Height - (offsetY + tile.Y * sizeFactor + sizeFactor / 2),
                     sizeFactor,
                     color
                 );

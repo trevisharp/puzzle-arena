@@ -1,5 +1,8 @@
 ﻿using PuzzleArena;
 using PuzzleArena.Controllers;
 
-var arena = new Arena(Level.Get(1), new HumanController());
+var arena = new Arena(
+    Level.Get(3), 
+    new HumanController()
+);
 arena.Start();

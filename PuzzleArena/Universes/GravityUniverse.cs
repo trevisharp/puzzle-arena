@@ -1,19 +1,19 @@
 namespace PuzzleArena.Universes;
 
-public class NormalUniverse : Universe
+public class GravityUniverse : Universe
 {
-    public override int Id => 1;
+    public override int Id => 2;
 
     public override (int nextX, int nextY) GetPlayerTarget(int currX, int currY, MoveType move, Level level)
     {
-        var under = level[currX, currY + 1];
-        bool hasGround = under is null || under.IsWall;
+        var above = level[currX, currY - 1];
+        bool hasGround = above is null || above.IsWall;
 
         if (hasGround && move == MoveType.None)
             return (currX, currY);
         
         if (!hasGround)
-            return (currX, currY + 1);
+            return (currX, currY - 1);
         
         var left = level[currX - 1, currY];
         if (left is not null && !left.IsWall && move == MoveType.Left)

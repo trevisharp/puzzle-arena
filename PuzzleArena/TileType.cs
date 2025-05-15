@@ -6,4 +6,5 @@ public enum TileType
     Path,
     Wall,
     Goal,
+    GravityPortal
 }
