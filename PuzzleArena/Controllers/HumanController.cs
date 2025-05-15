@@ -1,6 +1,6 @@
 using Radiance;
 
-namespace PuzzleArena;
+namespace PuzzleArena.Controllers;
 
 public class HumanController : Controller
 {

@@ -7,11 +7,15 @@ namespace PuzzleArena;
 public class Arena(Level level, Controller controller)
 {
     int currentUniverse = 1;
-    float playerXPos = level.StartX;
-    float playerYPos = level.StartY;
+    int playerXPos = level.StartX;
+    int playerYPos = level.StartY;
+    int nextPlayerXPos = level.StartX;
+    int nextPlayerYPos = level.StartY;
+    float animationTime = 0f;
 
     public void Start()
     {
+        var universes = Universe.All;
         var tileRender = render((val px, val py, val size, vec4 clr) => 
         {
             zoom(size);
@@ -26,8 +30,8 @@ public class Arena(Level level, Controller controller)
         
         var playerRender = render((val px, val py, val size) => 
         {
-            zoom(size);
-            move(px, py);
+            zoom(size * (0.8 + sin(3 * t) / 10));
+            move(px, py, 3);
             color = mix(
                 vec(0f, 0.8f, 0f, 1f),
                 vec(0.4f, 1f, 0.4f, 1f),
@@ -65,7 +69,18 @@ public class Arena(Level level, Controller controller)
 
         Window.OnFrame += () =>
         {
+            animationTime += 5 * Window.DeltaTime;
+            if (animationTime < 1f)
+                return;
             
+            playerXPos = nextPlayerXPos;
+            playerYPos = nextPlayerYPos;
+            animationTime = 0;
+
+            var move = controller.Move();
+            var universe = universes[currentUniverse];
+            (nextPlayerXPos, nextPlayerYPos) = universe
+                .GetPlayerTarget(playerXPos, playerYPos, move, level.Tiles);
         };
 
         Window.OnRender += () =>
@@ -76,12 +91,24 @@ public class Arena(Level level, Controller controller)
                 {
                     (true, _, _, _) => green,
                     (_, true, _, _) => vec(0.4f, 0.2f, 0, 1),
-                    _ => blue
+                    _ when currentUniverse == 1 => blue,
+                    _ => white
                 };
 
+                if (tile.X == playerXPos && tile.Y == playerYPos)
+                {
+                    var x = playerXPos * (1f - animationTime) + nextPlayerXPos * animationTime;
+                    var y = playerYPos * (1f - animationTime) + nextPlayerYPos * animationTime;
+                    playerRender(
+                        offsetX + x * sizeFactor + sizeFactor / 2,
+                        offsetY + y * sizeFactor + sizeFactor / 2,
+                        sizeFactor
+                    );
+                }
+
                 tileRender(
-                    offsetX + tile.X * sizeFactor,
-                    offsetY + tile.Y * sizeFactor,
+                    offsetX + tile.X * sizeFactor + sizeFactor / 2,
+                    offsetY + tile.Y * sizeFactor + sizeFactor / 2,
                     sizeFactor,
                     color
                 );
