@@ -24,8 +24,13 @@ public class HumanController : Controller
         };
     }
 
-    public override MoveType Move()
-        => (Apressed, DPressed, SpacePressed) switch
+    public override MoveType Move(
+        Level level,
+        int playerX,
+        int playerY,
+        int universe
+    ) =>
+        (Apressed, DPressed, SpacePressed) switch
         {
             (_, _, true) => MoveType.Return,
             (true, false, _) => MoveType.Left,

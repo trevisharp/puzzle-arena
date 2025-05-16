@@ -156,9 +156,9 @@ public class Level
         ),
 
         11 => FromString(
-            "WWWW4WW  ",
-            "2W  P   G",
-            "WWWWWWW 3"
+            "WWWW4WW   ",
+            "2W    P  G",
+            "WWWWWWW  3"
         ),
 
         12 => FromString(

@@ -81,7 +81,12 @@ public class Arena(Level level, Controller controller)
             if (currentTile is not null && currentTile.IsPortal)
                 currentUniverse = currentTile.PortalUniverse;
 
-            var move = controller.Move();
+            var move = controller.Move(
+                level,
+                playerXPos,
+                playerYPos,
+                currentUniverse 
+            );
             var universe = universes[currentUniverse];
             (nextPlayerXPos, nextPlayerYPos) = universe
                 .GetPlayerTarget(playerXPos, playerYPos, move, level
